@@ -1,24 +1,16 @@
+<h1 align="center" id="unifi-controller-api">
+UniFi Controller API — Comprehensive Guide
+</h1>
 <div align="center">
-<h1>
-UniFi Controller API - Professional Guide</h1>
-<p>
-  <a href="LICENSE">
     <img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg" />
-  </a>
-  <a href="https://unifi.ui.com/">
     <img alt="UniFi" src="https://img.shields.io/badge/UniFi-API-0a84ff.svg" />
-  </a>
-  <a href="https://opensource.guide/how-to-contribute/">
-    <img alt="Open Source Love" src="https://img.shields.io/badge/open--source-%E2%9D%A4%EF%B8%8F-ff69b4.svg" />
-  </a>
-</p>
 </div>
 
 A comprehensive, high-level reference for developers working with the Ubiquiti UniFi Controller API.
 
 ## 📚 Table of Contents
 
-- [UniFi Controller API - Professional Guide](#unifi-controller-api---professional-guide)
+- [UniFi Controller API — Comprehensive Guide](#unifi-controller-api)
 
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
