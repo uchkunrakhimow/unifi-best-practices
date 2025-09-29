@@ -1,43 +1,66 @@
-# UniFi Controller API - Professional Guide
+<div align="center">
+<h1>
+UniFi Controller API - Professional Guide</h1>
+<p>
+  <a href="LICENSE">
+    <img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg" />
+  </a>
+  <a href="https://shields.io/">
+    <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" />
+  </a>
+  <a href="https://shields.io/">
+    <img alt="Contributions" src="https://img.shields.io/badge/contributions-welcome-orange.svg" />
+  </a>
+  <a href="https://unifi.ui.com/">
+    <img alt="UniFi" src="https://img.shields.io/badge/UniFi-API-0a84ff.svg" />
+  </a>
+  <a href="https://opensource.guide/how-to-contribute/">
+    <img alt="Open Source Love" src="https://img.shields.io/badge/open--source-%E2%9D%A4%EF%B8%8F-ff69b4.svg" />
+  </a>
+</p>
+</div>
 
 A comprehensive, high-level reference for developers working with the Ubiquiti UniFi Controller API.
 
-## Table of Contents
+## 📚 Table of Contents
 
 - [UniFi Controller API - Professional Guide](#unifi-controller-api---professional-guide)
+
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Core Concepts](#core-concepts)
   - [Quick Start](#quick-start)
   - [API Endpoint Reference](#api-endpoint-reference)
+
     - [Authentication](#authentication)
     - [Device Management](#device-management)
     - [Client Management](#client-management)
     - [Internet Access Control](#internet-access-control)
     - [Network Configuration](#network-configuration)
     - [Site Management](#site-management)
-    - [Statistics \& Monitoring](#statistics--monitoring)
+    - [Statistics & Monitoring](#statistics--monitoring)
     - [Pagination and Filtering](#pagination-and-filtering)
+
   - [WebSocket API](#websocket-api)
+
     - [Connection Establishment](#connection-establishment)
     - [Common Event Types](#common-event-types)
     - [WebSocket Event Handling Best Practices](#websocket-event-handling-best-practices)
 
-## Overview
+## 🧭 Overview
 
 The UniFi Controller API allows programmatic control over your entire UniFi network, including devices, clients, and configuration settings. This document provides a structured guide to the most common and useful API endpoints.
 
-## Core Concepts
+## 🧠 Core Concepts
 
 - **Authentication**: Session-based with cookie persistence
 - **Site Structure**: Most endpoints require a site identifier (`default` is the primary site)
 - **Response Format**: JSON with standard structure `{ "meta": { "rc": "ok" }, "data": [...] }`
 - **MAC Addresses**: Use lowercase, typically without separators (e.g., `00112233aabb`)
 
-## Quick Start
+## ⚡ Quick Start
 
 ```javascript
-// Example authentication flow
 const response = await axios.post(
   "https://unifi.example.com/api/login",
   {
@@ -47,24 +70,20 @@ const response = await axios.post(
   },
   {
     withCredentials: true,
-    httpsAgent: new https.Agent({ rejectUnauthorized: false }), // For self-signed certs
+    httpsAgent: new https.Agent({ rejectUnauthorized: false }),
   }
 );
-
-// The session cookie is now stored in axios instance
 ```
 
-## API Endpoint Reference
+## 🔌 API Endpoint Reference
 
-### Authentication
+### 🔐 Authentication
 
 | Operation      | Method | Endpoint      | Description                     |
 | -------------- | ------ | ------------- | ------------------------------- |
 | Login          | POST   | `/api/login`  | Establish authenticated session |
 | Verify Session | GET    | `/api/self`   | Check if session is valid       |
 | Logout         | POST   | `/api/logout` | End current session             |
-
-**Login Example Body:**
 
 ```json
 {
@@ -74,7 +93,7 @@ const response = await axios.post(
 }
 ```
 
-### Device Management
+### 🛠️ Device Management
 
 | Operation        | Method | Endpoint                                | Description              |
 | ---------------- | ------ | --------------------------------------- | ------------------------ |
@@ -84,8 +103,6 @@ const response = await axios.post(
 | Restart Device   | POST   | `/api/s/{site}/cmd/devmgr`              | Restart specific device  |
 | Upgrade Firmware | POST   | `/api/s/{site}/cmd/devmgr`              | Upgrade device firmware  |
 
-**Restart Device Example Body:**
-
 ```json
 {
   "cmd": "restart",
@@ -93,7 +110,7 @@ const response = await axios.post(
 }
 ```
 
-### Client Management
+### 👥 Client Management
 
 | Operation         | Method | Endpoint                        | Description                        |
 | ----------------- | ------ | ------------------------------- | ---------------------------------- |
@@ -104,8 +121,6 @@ const response = await axios.post(
 | Unblock Client    | POST   | `/api/s/{site}/cmd/stamgr`      | Restore network access             |
 | Disconnect Client | POST   | `/api/s/{site}/cmd/stamgr`      | Force client disconnection         |
 
-**Block Client Example Body:**
-
 ```json
 {
   "cmd": "block-sta",
@@ -113,25 +128,23 @@ const response = await axios.post(
 }
 ```
 
-### Internet Access Control
+### 🌐 Internet Access Control
 
 | Operation        | Method | Endpoint                              | Description                   |
 | ---------------- | ------ | ------------------------------------- | ----------------------------- |
 | Set Access       | POST   | `/api/s/{site}/rest/user/{client_id}` | Allow/deny internet access    |
 | Bandwidth Limits | POST   | `/api/s/{site}/rest/trafficrule`      | Create client bandwidth rules |
 
-**Control Internet Access Example Body:**
-
 ```json
 {
   "use_fixedip": true,
-  "network_access": "deny", // or "allow"
-  "fixedip": "192.168.1.100", // client's current IP
+  "network_access": "deny",
+  "fixedip": "192.168.1.100",
   "usergroup_id": "existing-group-id"
 }
 ```
 
-### Network Configuration
+### 🗺️ Network Configuration
 
 | Operation      | Method | Endpoint                              | Description                 |
 | -------------- | ------ | ------------------------------------- | --------------------------- |
@@ -139,8 +152,6 @@ const response = await axios.post(
 | Create Network | POST   | `/api/s/{site}/rest/networkconf`      | Create new wireless network |
 | Update Network | PUT    | `/api/s/{site}/rest/networkconf/{id}` | Modify existing network     |
 | Delete Network | DELETE | `/api/s/{site}/rest/networkconf/{id}` | Remove network              |
-
-**Create WiFi Network Example Body:**
 
 ```json
 {
@@ -154,7 +165,7 @@ const response = await axios.post(
 }
 ```
 
-### Site Management
+### 🏷️ Site Management
 
 | Operation   | Method | Endpoint                     | Description              |
 | ----------- | ------ | ---------------------------- | ------------------------ |
@@ -162,8 +173,6 @@ const response = await axios.post(
 | Site Health | GET    | `/api/s/{site}/stat/health`  | Get site health metrics  |
 | Create Site | POST   | `/api/s/default/cmd/sitemgr` | Create new site          |
 | Delete Site | POST   | `/api/s/default/cmd/sitemgr` | Remove existing site     |
-
-**Create Site Example Body:**
 
 ```json
 {
@@ -173,7 +182,7 @@ const response = await axios.post(
 }
 ```
 
-### Statistics & Monitoring
+### 📊 Statistics & Monitoring
 
 | Operation        | Method | Endpoint                               | Description                      |
 | ---------------- | ------ | -------------------------------------- | -------------------------------- |
@@ -193,24 +202,21 @@ const response = await axios.post(
 | `within`  | Timeframe for historical data in seconds          | `/api/s/{site}/stat/sta?within=86400`          |
 | `attrs`   | Comma-separated list of attributes to include     | `/api/s/{site}/stat/sta?attrs=mac,ip,hostname` |
 
-**Example Filtered Request:**
-
 ```javascript
-// Fetch the last 10 active clients with only specific attributes
 const response = await api.get("/api/s/default/stat/sta", {
   params: {
     _limit: 10,
-    _sort: "-last_seen", // Sort by most recently seen
+    _sort: "-last_seen",
     attrs: "mac,hostname,ip,signal,tx_bytes,rx_bytes",
   },
 });
 ```
 
-## WebSocket API
+## 🔔 WebSocket API
 
 UniFi Controller also provides a WebSocket interface for real-time event monitoring. This allows you to receive immediate notifications about network changes without polling.
 
-### Connection Establishment
+### 🔗 Connection Establishment
 
 ```javascript
 const WebSocket = require("ws");
@@ -218,21 +224,18 @@ const axios = require("axios");
 const https = require("https");
 const cookieJar = {};
 
-// First authenticate via the REST API
 const api = axios.create({
   baseURL: "https://unifi.example.com",
   withCredentials: true,
   httpsAgent: new https.Agent({ rejectUnauthorized: false }),
 });
 
-// Login to get the authentication cookie
 await api
   .post("/api/login", {
     username: "admin",
     password: "password",
   })
   .then((response) => {
-    // Extract and store cookies for WebSocket connection
     const cookies = response.headers["set-cookie"];
     if (cookies) {
       cookies.forEach((cookie) => {
@@ -242,20 +245,17 @@ await api
     }
   });
 
-// Format cookies for WebSocket connection
 const cookieString = Object.entries(cookieJar)
   .map(([key, value]) => `${key}=${value}`)
   .join("; ");
 
-// Connect to WebSocket
 const ws = new WebSocket("wss://unifi.example.com/wss/s/default/events", {
   headers: {
     Cookie: cookieString,
   },
-  rejectUnauthorized: false, // For self-signed certificates
+  rejectUnauthorized: false,
 });
 
-// Handle WebSocket events
 ws.on("open", () => {
   console.log("WebSocket connection established");
 });
@@ -264,7 +264,6 @@ ws.on("message", (data) => {
   const event = JSON.parse(data);
   console.log("Received event:", event);
 
-  // Handle different event types
   if (event.data && event.data.meta && event.data.meta.message) {
     const msgType = event.data.meta.message;
     switch (msgType) {
@@ -274,7 +273,6 @@ ws.on("message", (data) => {
       case "device:sync":
         console.log("Device update:", event.data.data);
         break;
-      // Add handlers for other events
     }
   }
 });
@@ -288,7 +286,7 @@ ws.on("close", () => {
 });
 ```
 
-### Common Event Types
+### 🧾 Common Event Types
 
 | Event Type       | Description                | When Triggered                      |
 | ---------------- | -------------------------- | ----------------------------------- |
@@ -300,7 +298,7 @@ ws.on("close", () => {
 | `evt`            | Various system events      | Various actions on the system       |
 | `notification`   | System notifications       | New notification                    |
 
-### WebSocket Event Handling Best Practices
+### ✅ WebSocket Event Handling Best Practices
 
 1. **Automatic Reconnection**
 
@@ -311,12 +309,11 @@ function connectWebSocket() {
     rejectUnauthorized: false,
   });
 
-  // Set timeout for connection attempts
   const connectionTimeout = setTimeout(() => {
     if (ws.readyState !== WebSocket.OPEN) {
       ws.terminate();
       console.log("Connection attempt timed out, retrying...");
-      setTimeout(connectWebSocket, 5000); // Try again in 5 seconds
+      setTimeout(connectWebSocket, 5000);
     }
   }, 10000);
 
@@ -324,7 +321,6 @@ function connectWebSocket() {
     clearTimeout(connectionTimeout);
     console.log("WebSocket connection established");
 
-    // Set up a keepalive ping
     const pingInterval = setInterval(() => {
       if (ws.readyState === WebSocket.OPEN) {
         ws.ping();
@@ -338,36 +334,28 @@ function connectWebSocket() {
     console.log("Connection closed, attempting to reconnect...");
     setTimeout(connectWebSocket, 5000);
   });
-
-  // Handle other events as before
 }
 
-// Initial connection
 connectWebSocket();
 ```
 
 2. **Event Filtering and Processing**
 
 ```javascript
-// Define callback handlers for different event types
 const eventHandlers = {
   "sta:sync": (data) => {
-    // Process client updates
     const clientMac = data.mac;
     const connectionState = data.state ? "connected" : "disconnected";
     console.log(`Client ${clientMac} is now ${connectionState}`);
   },
   "device:sync": (data) => {
-    // Process device updates
     console.log(`Device ${data.name} (${data.mac}) updated: ${data.state}`);
   },
   alarm: (data) => {
-    // Process alarms
     console.log(`ALARM: ${data.msg} (Key: ${data.key}, Time: ${data.time})`);
   },
 };
 
-// In the message handler
 ws.on("message", (rawData) => {
   try {
     const event = JSON.parse(rawData);
@@ -375,7 +363,6 @@ ws.on("message", (rawData) => {
     if (event.data && event.data.meta && event.data.meta.message) {
       const msgType = event.data.meta.message;
 
-      // Call the appropriate handler if it exists
       if (eventHandlers[msgType]) {
         eventHandlers[msgType](event.data.data);
       } else {
