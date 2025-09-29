@@ -5,12 +5,6 @@ UniFi Controller API - Professional Guide</h1>
   <a href="LICENSE">
     <img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg" />
   </a>
-  <a href="https://shields.io/">
-    <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" />
-  </a>
-  <a href="https://shields.io/">
-    <img alt="Contributions" src="https://img.shields.io/badge/contributions-welcome-orange.svg" />
-  </a>
   <a href="https://unifi.ui.com/">
     <img alt="UniFi" src="https://img.shields.io/badge/UniFi-API-0a84ff.svg" />
   </a>
